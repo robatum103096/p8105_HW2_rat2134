@@ -7,11 +7,24 @@ output: github_document
 
 ```{r setup, include=FALSE}
 #Load required packages
-
+library(readxl)
+library(janitor)
+library(tidyverse)
+library(dplyr)
 ```
 
 # Problem 1
 ```{r}
+#Import Mr. Trash Wheel dataset 
+Mr_Trash_Data = 
+  read_excel("./HW2_datasets/Mr_Trash_Wheel.xlsx",
+             range = cell_cols("A:N")) %>%
+  drop_na() %>%
+  janitor::clean_names() %>%
+  mutate(sports_balls,
+         sports_balls = as.integer(round(sports_balls, digits = 0)))
+
+#Import precipitation data for 2017 and 2018
 
 ```
 
