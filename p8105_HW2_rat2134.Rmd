@@ -48,3 +48,27 @@ Precipitation_data_2017_and_2018 =
   mutate(Month = month.name[Month])
 ```
 
+`Mr_Trash_Data` has `r dim(Mr_Trash_Data)[1]` observations and `r dim(Mr_Trash_Data)[2]` variables:
+
+* Dumpster number
+* Month
+* Year
+* Date of dumpster check (YYYY-MM-DD)
+* Weight (in tons) and volume (in cubic yards) of trash in dumpster
+* Quantity of plastic bottles, polystyrene, cigarette butts, glass bottles, grocery bags, chip bags, and sports balls found in the dumpster
+* Number of homes powered (each ton of trash equates to on average 500 kilowatts of electricity, and an average household will use 30 kilowatts per day)
+
+`Precipitation_data_2017_and_2018` has `r dim(Precipitation_data_2017_and_2018)[1]` observations and `r dim(Precipitation_data_2017_and_2018)[2]` variables:
+
+* Month
+* Total Precipitation (in inches)
+* Year
+
+With the data available, the total precipitation in 2018 was `r sum(pull(filter(Precipitation_data_2017_and_2018, Year == 2018), Total_Precipitation))` inches. In addition, the median number of sports balls found in the dumpsters in 2017 was `r median(pull(filter(Mr_Trash_Data, year == 2017), sports_balls))`.
+
+# Problem 2
+```{r}
+#Import and clean first dataset
+
+```
+
