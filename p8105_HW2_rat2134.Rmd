@@ -1,0 +1,17 @@
+---
+title: "p8105_HW2_rat2134"
+author: "Robert Tumasian"
+date: "9/28/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+#Load required packages
+
+```
+
+# Problem 1
+```{r}
+
+```
+
