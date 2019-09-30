@@ -77,7 +77,7 @@ Pols_month =
   separate(mon, into = c("year", "month", "day")) %>%
   mutate(month = month.name[as.factor(month)]) %>%
   #In addition to 0s and 1s in the prez_gop variable, there are also 2s
-  #All 2s will be considered as and reassigned to 1s
+  #All 2s will be reassigned to 1s
   mutate(prez_gop = ifelse(prez_gop == 1 | prez_gop == 2, 1, 0)) %>%
   mutate(president = recode(prez_gop, `0` = "dem", `1` = "gop")) %>%
   select(-c(prez_dem, prez_gop, day))
@@ -144,7 +144,7 @@ The `unemployment_data` dataset contains `r dim(unemployment_data)[1]` observati
 
 This data is available from January 1948 to September 2015.
 
-Lastly, the merged data set `snp_and_pols_and_unemployment` contains 
+Lastly, the `snp_and_pols_and_unemployment` dataset (merged by year and month) contains `r dim(snp_and_pols_and_unemployment)[1]` observations and `r dim(snp_and_pols_and_unemployment)[2]` variables. All the variables in this combined dataset contain those in the `Pols_month`, `snp`, and `unemployment_data` datasets. This data is available in different time intervals for different variables, which explains why there are some `NA` values.
 
 # Problem 3
 ```{r, message=FALSE}
@@ -154,14 +154,16 @@ popular_baby_names =
   janitor::clean_names() %>%
   mutate(ethnicity = replace(ethnicity, 
                              ethnicity == "ASIAN AND PACI", 
-                             "ASIAN AND PACIFIC ISLANDER")) %>%
-  mutate(ethnicity = replace(ethnicity, 
+                             "ASIAN AND PACIFIC ISLANDER"),
+         ethnicity = replace(ethnicity, 
                              ethnicity == "WHITE NON HISP", 
-                             "WHITE NON HISPANIC")) %>% 
-  mutate(ethnicity = replace(ethnicity, 
+                             "WHITE NON HISPANIC"),
+         ethnicity = replace(ethnicity, 
                              ethnicity == "BLACK NON HISP", 
                              "BLACK NON HISPANIC")) %>%
-  mutate(childs_first_name = str_to_lower(childs_first_name)) %>%
+  mutate(ethnicity = str_to_lower(ethnicity),
+         childs_first_name = str_to_lower(childs_first_name),
+         gender = str_to_lower(gender)) %>%
   distinct()
 ```
 
@@ -173,18 +175,6 @@ Olivia_rank_table =
   pivot_wider(
     names_from = year_of_birth,
     values_from = rank) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "ASIAN AND PACIFIC ISLANDER",
-                      "Asian and Pacific Islander")) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "BLACK NON HISPANIC",
-                      "Black Non Hispanic")) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "HISPANIC",
-                      "Hispanic")) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "WHITE NON HISPANIC",
-                      "White Non Hispanic")) %>%
   rename("Ethnicity" = ethnicity)
 
 kable(Olivia_rank_table)
@@ -193,23 +183,11 @@ kable(Olivia_rank_table)
 ```{r}
 #Table showing most popular male baby name over time
 Most_popular_male_baby_name = 
-  filter(popular_baby_names, gender == "MALE" & rank == 1) %>%
+  filter(popular_baby_names, gender == "male" & rank == 1) %>%
   select(-c(gender, count, rank)) %>%
   pivot_wider(
     names_from = year_of_birth,
     values_from = childs_first_name) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "ASIAN AND PACIFIC ISLANDER",
-                      "Asian and Pacific Islander")) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "BLACK NON HISPANIC",
-                      "Black Non Hispanic")) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "HISPANIC",
-                      "Hispanic")) %>%
-  mutate(ethnicity = replace(ethnicity,
-                      ethnicity == "WHITE NON HISPANIC",
-                      "White Non Hispanic")) %>%
   rename("Ethnicity" = ethnicity)
 
 kable(Most_popular_male_baby_name)
@@ -218,8 +196,8 @@ kable(Most_popular_male_baby_name)
 ```{r}
 #Obtain data for all male, white non-hispanic baby names in 2016
 Male_White_Non_Hispanic_Names_2016 = 
-  filter(popular_baby_names, gender == "MALE" & 
-           ethnicity == "WHITE NON HISPANIC" &
+  filter(popular_baby_names, gender == "male" & 
+           ethnicity == "white non hispanic" &
            year_of_birth == 2016)
 
 #Create scatterplot of number of children vs. rank
