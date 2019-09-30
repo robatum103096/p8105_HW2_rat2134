@@ -103,5 +103,15 @@ unemployment_data =
   rename(year = Year) %>%
   drop_na() %>%
   arrange(year, month) %>%
-  mutate(month = month.name[as.factor(month)])
+  mutate(month = month.name[as.factor(month)]) %>%
+  mutate(year = str_c(year))
 ```
+
+```{r}
+#Merging all three datasets
+snp_and_pols = left_join(Pols_month, snp, by = c("year", "month"))
+snp_and_pols_and_unemployment = left_join(snp_and_pols, 
+                                          unemployment_data, 
+                                          by = c("year", "month"))
+```
+
