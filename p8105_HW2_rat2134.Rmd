@@ -179,7 +179,7 @@ popular_baby_names =
 ```
 
 ```{r}
-#Table to show rank in popularity of "Olivia" from 2011 to 2016
+#Table showing rank in popularity of "Olivia" from 2011 to 2016
 Olivia_rank_table = 
   filter(popular_baby_names, childs_first_name == "olivia") %>%
   select(year_of_birth, ethnicity, rank) %>%
